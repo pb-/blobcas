@@ -7,6 +7,8 @@
   (:gen-class))
 
 (def storage-path (System/getenv "STORAGE_PATH"))
+(def keep-all-versions?
+  (or (some-> (System/getenv "KEEP_ALL_VERSIONS") Boolean/parseBoolean) false))
 (def max-blob-size (* 1 1024 1024))
 (def blob-id-length 25)
 (def random (SecureRandom.))
@@ -61,6 +63,10 @@
             (if-not (= replaces (sha256 file))
               :conflict
               (do
+                (when keep-all-versions?
+                  (.renameTo
+                    (File. file)
+                    (File. (str file \. (System/currentTimeMillis)))))
                 (.renameTo f (File. file))
                 :ok))))
         (finally
