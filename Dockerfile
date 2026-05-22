@@ -15,7 +15,7 @@ RUN clojure -T:build uber
 
 
 # ----------------------------------------------------
-FROM gcr.io/distroless/java17-debian11
+FROM gcr.io/distroless/java25-debian13@sha256:dade01b669efd3bea3977f73cc196c56f1ee678a71ec8305f84ec15fd5a23c8d
 WORKDIR /
 EXPOSE 8080
 VOLUME /data
